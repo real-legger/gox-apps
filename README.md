@@ -4,7 +4,7 @@ Go/Goose microservices — the Go rewrite of the `ntx-apps` NestJS monorepo.
 
 ## Overview
 
-`gox-apps` is a Go workspace containing 19 independent microservices built with the [Goose](https://github.com/awesome-goose/goose) framework. Each service lives in `libs/<name>/` as a self-contained Go module and can be deployed standalone or composed into a larger platform.
+`gox-apps` is a Go workspace containing 1 independent microservices built with the [Goose](https://github.com/awesome-goose/goose) framework. Each service lives in `libs/<name>/` as a self-contained Go module and can be deployed standalone or composed into a larger platform.
 
 ## Services
 
