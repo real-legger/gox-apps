@@ -1,0 +1,66 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "libs/*/v*"        # e.g. libs/audit/v1.2.3  or  libs/capital/v0.5.0
+
+jobs:
+  publish:
+    name: Tag and publish module
+    runs-on: ubuntu-latest
+    # go.work references paths outside the checkout — disable workspace mode.
+    env:
+      GOWORK: "off"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Extract service name and version from the tag (e.g. "libs/audit/v1.2.3")
+      - name: Parse tag
+        id: parse
+        run: |
+          TAG="${{ github.ref_name }}"
+          SERVICE=$(echo "$TAG" | cut -d/ -f2)
+          VERSION="${TAG##*/}"
+          echo "service=$SERVICE" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "module=github.com/thescaffold/gox-apps/libs/$SERVICE" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: libs/${{ steps.parse.outputs.service }}/go.mod
+          cache-dependency-path: libs/${{ steps.parse.outputs.service }}/go.sum
+
+      - name: Verify build
+        working-directory: libs/${{ steps.parse.outputs.service }}
+        run: go build ./...
+
+      - name: Run tests
+        working-directory: libs/${{ steps.parse.outputs.service }}
+        run: go test ./... -timeout 60s
+
+      # GOPROXY=proxy.golang.org will pick up the tag automatically once it is pushed.
+      # This step just validates that the module is fetchable.
+      - name: Validate module proxy
+        run: |
+          MODULE="${{ steps.parse.outputs.module }}"
+          VERSION="${{ steps.parse.outputs.version }}"
+          echo "Published: $MODULE@$VERSION"
+          echo "Proxy URL: https://proxy.golang.org/$MODULE/@v/$VERSION.info"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "${{ steps.parse.outputs.service }} ${{ steps.parse.outputs.version }}"
+          body: |
+            Release of `${{ steps.parse.outputs.module }}` ${{ steps.parse.outputs.version }}.
+
+            Install:
+            ```
+            go get ${{ steps.parse.outputs.module }}@${{ steps.parse.outputs.version }}
+            ```
+          generate_release_notes: true

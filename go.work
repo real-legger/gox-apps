@@ -1,0 +1,21 @@
+go 1.25.3
+
+// Goose framework (local development — matches published v0.0.6)
+use ../../../awesome-goose/goose
+
+// Shared gox-packages
+use ../../../scaffold/gox-packages/libs/core
+
+use ../../../scaffold/gox-packages/libs/blobs
+
+// App modules
+use (
+	./libs/wallet
+)
+
+// Workspace-only overrides so local development resolves to the in-tree copies
+// of gox-packages libs before their tags are published. These are not used by
+// consumers of the published modules.
+replace github.com/thescaffold/gox-packages/libs/core v0.0.1 => ../gox-packages/libs/core
+
+replace github.com/thescaffold/gox-packages/libs/blobs v0.0.1 => ../gox-packages/libs/blobs
