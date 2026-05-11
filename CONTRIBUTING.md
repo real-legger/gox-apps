@@ -2,7 +2,7 @@
 
 ## Adding a new service
 
-1. Create `libs/<name>/go.mod` with module path `github.com/thescaffold/gox-apps-<name>`.
+1. Create `libs/<name>/go.mod` with module path `github.com/real-legger/gox-apps-<name>`.
 2. Add the module path to `go.work`.
 3. Follow the existing directory layout:
    ```

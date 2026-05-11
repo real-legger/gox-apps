@@ -58,10 +58,10 @@ publish:
 	fi; \
 	echo ">>> Pinning gox-packages/libs/{core,blobs} requires to v$$CV"; \
 	for lib in $(LIBS); do \
-		perl -i -pe 's{(github\.com/thescaffold/gox-packages/libs/(?:core|blobs) )v[0-9][\S]*}{$$1v'"$$CV"'}' libs/$$lib/go.mod; \
+		perl -i -pe 's{(github\.com/real-legger/gox-packages/libs/(?:core|blobs) )v[0-9][\S]*}{$$1v'"$$CV"'}' libs/$$lib/go.mod; \
 	done; \
 	echo ">>> Updating go.work replace lines to v$$CV"; \
-	perl -i -pe 's{(github\.com/thescaffold/gox-packages/libs/(?:core|blobs) )v[0-9][\S]*( =>)}{$$1v'"$$CV"'$$2}' go.work; \
+	perl -i -pe 's{(github\.com/real-legger/gox-packages/libs/(?:core|blobs) )v[0-9][\S]*( =>)}{$$1v'"$$CV"'$$2}' go.work; \
 	if [ -n "$$(git status --porcelain)" ]; then \
 		git add libs/*/go.mod go.work; \
 		git commit -m "Release v$(version)"; \

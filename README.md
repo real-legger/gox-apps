@@ -10,7 +10,7 @@ Go/Goose microservices — the Go rewrite of the `ntx-apps` NestJS monorepo.
 
 | Service                         | Module path                                   | Purpose                                      |
 | ------------------------------- | --------------------------------------------- | -------------------------------------------- |
-| [wallet](libs/wallet/README.md) | `github.com/thescaffold/gox-apps/libs/wallet` | balance, transactions, and wallet management |
+| [wallet](libs/wallet/README.md) | `github.com/real-legger/gox-apps/libs/wallet` | balance, transactions, and wallet management |
 
 ## Repository Structure
 
@@ -57,7 +57,7 @@ package main
 
 import (
     "github.com/awesome-goose/goose"
-    wallet "github.com/thescaffold/gox-apps/libs/wallet/app"
+    wallet "github.com/real-legger/gox-apps/libs/wallet/app"
 )
 
 func main() {
@@ -114,7 +114,7 @@ there are uncommitted changes.
 Consumers resolve any service independently:
 
 ```bash
-go get github.com/thescaffold/gox-apps/libs/identity@v0.0.1
+go get github.com/real-legger/gox-apps/libs/identity@v0.0.1
 ```
 
 ### Releasing a single service

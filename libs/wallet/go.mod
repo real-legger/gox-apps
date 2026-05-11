@@ -1,4 +1,4 @@
-module github.com/thescaffold/gox-apps/libs/wallet
+module github.com/real-legger/gox-apps/libs/wallet
 
 go 1.25.3
 
