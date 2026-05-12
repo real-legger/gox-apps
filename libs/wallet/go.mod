@@ -8,6 +8,7 @@ require github.com/thescaffold/gox-packages/libs/core v0.0.1
 
 require (
 	github.com/google/uuid v1.6.0
+	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )
 
@@ -26,6 +27,5 @@ require (
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/text v0.36.0 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
-	gorm.io/driver/postgres v1.5.11 // indirect
 	gorm.io/driver/sqlite v1.5.7 // indirect
 )
