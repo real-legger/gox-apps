@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"sort"
-	"time"
 )
 
 // CanonicalHash returns SHA-256 of canonical-JSON form of v as defined in PLAN.md §13:
@@ -95,13 +94,3 @@ func writeCanonical(buf *bytes.Buffer, v any) error {
 	return nil
 }
 
-// IdempotencyOutcome reports the result of an idempotency check.
-type IdempotencyOutcome struct {
-	// Found = true and Conflict = false → cached response replay.
-	Found bool
-	// Conflict = true → same key, different request hash or wallet.
-	Conflict bool
-	// Cached holds the prior response if Found and not Conflict.
-	Cached     json.RawMessage
-	OriginalAt *time.Time
-}

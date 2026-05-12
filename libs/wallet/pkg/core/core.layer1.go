@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"encoding/json"
 	"sort"
 	"strconv"
@@ -368,7 +369,7 @@ func (l *Layer1) convertInTx(tx *gorm.DB, opts ConvertOpts) (ConvertResult, *Led
 		Type:             TypeDebit,
 		PrimaryAccountID: opts.FromAccountID,
 		Currency:         from.Currency,
-		Tags:             cloneWith(opts.Tags, Tags{"product": "convert", "rate": rate, "rate_id": strconv.FormatInt(rateID, 10)}),
+		Tags:             opts.Tags.Merge(Tags{"product": "convert", "rate": rate, "rate_id": strconv.FormatInt(rateID, 10)}),
 		IdempotencyKey:   opts.IdempotencyKey,
 		FxPairGroupID:    &pairID,
 		Entries: []EntryInput{
@@ -382,7 +383,7 @@ func (l *Layer1) convertInTx(tx *gorm.DB, opts ConvertOpts) (ConvertResult, *Led
 		Type:             TypeCredit,
 		PrimaryAccountID: opts.ToAccountID,
 		Currency:         to.Currency,
-		Tags:             cloneWith(opts.Tags, Tags{"product": "convert", "rate": rate, "rate_id": strconv.FormatInt(rateID, 10)}),
+		Tags:             opts.Tags.Merge(Tags{"product": "convert", "rate": rate, "rate_id": strconv.FormatInt(rateID, 10)}),
 		IdempotencyKey:   opts.IdempotencyKey,
 		FxPairGroupID:    &pairID,
 		Entries: []EntryInput{
@@ -519,7 +520,7 @@ func lookupIdempotency(tx *gorm.DB, key, walletID string, hash []byte) (json.Raw
 		return nil, ErrConflictf(ErrIdempotencyConflict,
 			"idempotency key already used by a different wallet", map[string]any{"key": key})
 	}
-	if !equalBytes(r.RequestHash, hash) {
+	if !bytes.Equal(r.RequestHash, hash) {
 		return nil, ErrConflictf(ErrIdempotencyConflict,
 			"idempotency key already used with a different request body", map[string]any{"key": key})
 	}
@@ -610,29 +611,6 @@ func dedupInt64(in []int64) []int64 {
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i] < out[j] })
 	return out
-}
-
-func cloneWith(base Tags, extra Tags) Tags {
-	out := make(Tags, len(base)+len(extra))
-	for k, v := range base {
-		out[k] = v
-	}
-	for k, v := range extra {
-		out[k] = v
-	}
-	return out
-}
-
-func equalBytes(a, b []byte) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
 
 // ── rates ────────────────────────────────────────────────────────────────────

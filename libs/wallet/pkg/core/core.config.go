@@ -2,7 +2,7 @@ package core
 
 import (
 	"encoding/json"
-	"sort"
+	"strconv"
 
 	"gorm.io/gorm"
 )
@@ -57,7 +57,7 @@ func ResolveAccumulatingFees(db *gorm.DB, category string, tags Tags, baseAmount
 	for _, r := range rules {
 		var p FeePayload
 		if jerr := json.Unmarshal(r.Payload, &p); jerr != nil {
-			return nil, ErrInternalf("invalid fee payload on rule " + itoa(r.ID))
+			return nil, ErrInternalf("invalid fee payload on rule " + strconv.FormatInt(r.ID, 10))
 		}
 		amount := int64(0)
 		switch {
@@ -105,7 +105,7 @@ func ResolveLedgerPostings(db *gorm.DB, tags Tags) ([]LedgerPostingPayload, *Led
 	for _, r := range rules {
 		var p LedgerPostingPayload
 		if jerr := json.Unmarshal(r.Payload, &p); jerr != nil {
-			return nil, ErrInternalf("invalid core_posting payload on rule " + itoa(r.ID))
+			return nil, ErrInternalf("invalid core_posting payload on rule " + strconv.FormatInt(r.ID, 10))
 		}
 		out = append(out, p)
 	}
@@ -231,6 +231,3 @@ func parseInt64(s string) (int64, int) {
 	return n, len(s)
 }
 
-// dedup keeps the first occurrence of each key in a slice of strings.
-// (small util used by tag merging helpers downstream)
-var _ = sort.Strings

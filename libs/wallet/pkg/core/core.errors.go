@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/awesome-goose/goose/types"
@@ -99,49 +100,9 @@ func jsonish(m map[string]any) string {
 		case string:
 			out += val
 		default:
-			out += sprint(val)
+			out += fmt.Sprint(val)
 		}
 	}
 	out += "}"
 	return out
-}
-
-func sprint(v any) string {
-	switch x := v.(type) {
-	case int:
-		return itoa(int64(x))
-	case int64:
-		return itoa(x)
-	case bool:
-		if x {
-			return "true"
-		}
-		return "false"
-	case nil:
-		return "null"
-	default:
-		return ""
-	}
-}
-
-func itoa(n int64) string {
-	if n == 0 {
-		return "0"
-	}
-	negative := n < 0
-	if negative {
-		n = -n
-	}
-	var buf [20]byte
-	i := len(buf)
-	for n > 0 {
-		i--
-		buf[i] = byte('0' + n%10)
-		n /= 10
-	}
-	if negative {
-		i--
-		buf[i] = '-'
-	}
-	return string(buf[i:])
 }
