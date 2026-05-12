@@ -7,8 +7,12 @@ require github.com/awesome-goose/goose v0.0.6
 require github.com/thescaffold/gox-packages/libs/core v0.0.1
 
 require (
+	github.com/google/uuid v1.6.0
+	gorm.io/gorm v1.25.12
+)
+
+require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
@@ -24,5 +28,4 @@ require (
 	gorm.io/driver/mysql v1.5.7 // indirect
 	gorm.io/driver/postgres v1.5.11 // indirect
 	gorm.io/driver/sqlite v1.5.7 // indirect
-	gorm.io/gorm v1.25.12 // indirect
 )

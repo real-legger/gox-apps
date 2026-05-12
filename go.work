@@ -16,6 +16,6 @@ use (
 // Workspace-only overrides so local development resolves to the in-tree copies
 // of gox-packages libs before their tags are published. These are not used by
 // consumers of the published modules.
-replace github.com/thescaffold/gox-packages/libs/core v0.0.1 => ../gox-packages/libs/core
+replace github.com/thescaffold/gox-packages/libs/core v0.0.1 => ../../../scaffold/gox-packages/libs/core
 
-replace github.com/thescaffold/gox-packages/libs/blobs v0.0.1 => ../gox-packages/libs/blobs
+replace github.com/thescaffold/gox-packages/libs/blobs v0.0.1 => ../../../scaffold/gox-packages/libs/blobs
